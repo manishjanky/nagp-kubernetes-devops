@@ -1,0 +1,7 @@
+kind: Kustomization
+metadata:
+  name: nagp-k8-devops
+resources:
+  - ./k8-specs/config.yaml
+  - ./k8-specs/mysql-db.yaml
+  - ./k8-specs/node-api.yaml

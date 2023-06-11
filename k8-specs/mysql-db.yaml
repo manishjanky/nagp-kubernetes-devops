@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-service
+  namespace: nagp
+  labels:
+    app: db-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-service
+  template:
+    metadata:
+      name: db-service
+      labels:
+        app: db-service
+    spec:
+      containers:
+        - name: db-service
+          image: mysql:5-debian
+          args: ["--max_allowed_packet=268435456"] # because with mySql there is a communication packet issue with default value
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - mountPath: "/var/lib/mysql"
+              name: mysql-db
+          envFrom:
+            - configMapRef:
+                name: db-config
+            - secretRef:
+                name: db-secret
+      volumes:
+        - name: mysql-db
+          # persistentVolumeClaim:
+          #   claimName: mysql-db
+          hostPath:
+          # directory location on host
+            path: /data
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+  namespace: nagp
+spec:
+  selector:
+    app: db-service
+  ports:
+    - targetPort: 3306
+      port: 3306
+      protocol: TCP

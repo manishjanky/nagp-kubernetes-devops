@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-service
+  namespace: nagp
+  labels:
+    app: api-service
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: api-service
+  template:
+    metadata:
+      labels:
+        app: api-service
+    spec:
+      containers:
+        - name: api-service
+          image: nagp-k8-api-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: db-config
+            - secretRef:
+                name: db-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-service
+  namespace: nagp
+spec:
+  selector:
+    app: api-service
+  type: LoadBalancer
+  ports:
+    - targetPort: 3000
+      port: 3000
+      protocol: TCP
