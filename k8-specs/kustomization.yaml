@@ -1,0 +1,11 @@
+# This file can create the below mentioned resources and also delete
+# The intention behind this was to use one command to delete the resources and since PersistentVolume and Claim one created and then if deleted will loose data..
+# Also if only PVC is delete it losses it's binding with the volume, And PVC in term is bound to namespace. Hence the volume and namespace specs are excluded from this file.
+# To start resource please use the the file ./../Kustomization i.e. the file located in the root folder of this project.repo
+kind: Kustomization
+metadata:
+  name: nagp-k8-devops
+resources:
+  - ./config.yaml
+  - ./mysql-db.yaml
+  - ./node-api.yaml

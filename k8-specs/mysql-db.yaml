@@ -32,11 +32,10 @@ spec:
                 name: db-secret
       volumes:
         - name: mysql-db
-          # persistentVolumeClaim:
-          #   claimName: mysql-db
-          hostPath:
-          # directory location on host
-            path: /data
+          # hostPath:
+          #   path: /data # this may depend on the kubernetes service e.g. For GCE this is /mnt/disks
+          persistentVolumeClaim:
+            claimName: mysql-db
 
 ---
 apiVersion: v1

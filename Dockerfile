@@ -13,4 +13,5 @@ COPY index.js ./
 EXPOSE 3000
 CMD [ "node", "index.js" ]
 
+# docker build . -t nagp-k8-api-service:v1
 # docker build . -t nagp-k8-api-service

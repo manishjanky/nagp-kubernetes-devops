@@ -7,6 +7,12 @@ metadata:
     app: api-service
 spec:
   replicas: 4
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: api-service
@@ -26,6 +32,13 @@ spec:
                 name: db-config
             - secretRef:
                 name: db-secret
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
 
 ---
 apiVersion: v1
