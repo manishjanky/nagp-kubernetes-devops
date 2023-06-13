@@ -1,14 +1,14 @@
-# napg-kubernetes-devops
+# nagp-kubernetes-devops
 
 This assignments goal to setup a api service and a databse on kubernetes. The db service must not be exposed outside of the cluster while the api service needs to be exposed.
 
 ## Resources
 
-- **API tier docker image** : [nagp-k8-api-service](https://hub.docker.com/r/manishnagarro/nagp-k8-api-service)
+- **API tier docker image** : [manishnagarro/nagp-k8-api-service](https://hub.docker.com/r/manishnagarro/nagp-k8-api-service)
 - **Github repo** : [nagp-kubernetes-devops](https://github.com/manishjanky/nagp-kubernetes-devops)
 - **API service endpoint** : 
   - **On local** : http://localhost:300/movies
-  - **On cloud** : http://your-api-service-endpoint/movies
+  - **On cloud** : http://{your-api-service-endpoint}/movies
 
 ### Folders
 
@@ -81,7 +81,7 @@ Change your current directory to this director and apply all the files in ths k8
 
 - If you are on cloud infra then get the endpoint of the API service and you can access the api like **{your-service-endpoint}/movies**
 
-  - Youe can use the below command to get the `service-endpoint`. After you execute the below command you will find the endpoint in the External IP column.
+  - Youe can use the below command to get the `service-endpoint`. You will find the endpoint in the External IP column.
 
   ```
   kubectl describe service api-service wide -o
