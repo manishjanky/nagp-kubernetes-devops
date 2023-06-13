@@ -9,6 +9,7 @@ const app = express();
 const port = 3000;
 const connectionAttemptDelay = 2000;
 const db_name = process.env.MYSQL_DATABASE;
+const table_name = process.env.MYSQL_TABLE;
 const db_username = process.env.MYSQL_USER;
 const db_password = process.env.MYSQL_PASSWORD;
 const db_service_uri = process.env.MYSQL_DB_HOST;
@@ -111,14 +112,14 @@ function getMovies() {
       reject("Unable to process request");
     });
     if (con) {
-      con.query("SELECT * FROM movies", (err, result) => {
+      con.query(`SELECT * FROM ${table_name}`, (err, result) => {
         if (err) {
           reject(err);
         } else {
           resolve(result);
         }
         // Destroy the connection when done processing to avoid any side effects
-        con.destroy();
+        con.end();
       });
     }
   });

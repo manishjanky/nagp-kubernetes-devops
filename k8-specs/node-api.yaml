@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: api-service
-          image: nagp-k8-api-service:latest
+          image: manishnagarro/nagp-k8-api-service:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000

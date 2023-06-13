@@ -4,15 +4,15 @@ This assignments goal to setup a api service and a databse on kubernetes. The db
 
 ## Resources
 
-- **API tier docker image** :
+- **API tier docker image** : [nagp-k8-api-service](https://hub.docker.com/r/manishnagarro/nagp-k8-api-service)
 - **Github repo** : [nagp-kubernetes-devops](https://github.com/manishjanky/nagp-kubernetes-devops)
-- **API service endpoint** :
-  - **On local machine** : https://localhost:300/movies
-  - **On cloud** : https://your-api-service-endpoint/movies
+- **API service endpoint** : 
+  - **On local** : http://localhost:300/movies
+  - **On cloud** : http://your-api-service-endpoint/movies
 
 ### Folders
 
-- **./** : Aka the root folder
+- **./** : root folder
 
   - **Dockerfile** : This file is required file to create the image of the nodejs based API Tier.
   - **kustomization.yaml** : This files chains all the K8 spec files for deployments etc. as per _kubectl kustomize_.
@@ -29,7 +29,7 @@ This assignments goal to setup a api service and a databse on kubernetes. The db
 - **init-db** : This Folder conatins the SQL Db realted files
   - **db-init.sql** : This file contains the DB initialization script that creates a SQL Table and adds some records to the same.
 
-### How to spin up thing
+### How to spin things up
 
 #### Method 1:
 
@@ -37,29 +37,41 @@ Change your current directory to this director and apply all the files in ths k8
 
 - Create the namespace as all our resources will be linked to this
 
-  > kubectl apply -f ./k8-specs/namespace.yaml
+  ```
+  kubectl apply -f ./k8-specs/namespace.yaml
+  ```
 
 - Create the configMap and Secret as both API and the DB service depend on this
 
-  > kubectl apply -f ./k8-specs/config.yaml
+  ```
+  kubectl apply -f ./k8-specs/config.yaml
+  ```
 
 - Create persistent volume and volume claim, since db-service will depend on this
 
-  > kubectl apply -f ./k8-specs/volumes.yaml
+  ```
+  kubectl apply -f ./k8-specs/volumes.yaml
+  ```
 
 - Create the database deployment and service. This should be done befor the API tier so when the API layer attempts to connect the DB should be ready for connections.
 
-  > kubectl apply -f ./k8-specs/mysql-db.yaml
+  ```
+  kubectl apply -f ./k8-specs/mysql-db.yaml
+  ```
 
 - Create the API deployment and service.
 
-  > kubectl apply -f ./k8-specs/node-api.yaml
+  ```
+  kubectl apply -f ./k8-specs/node-api.yaml
+  ```
 
 #### Method 2
 
-- Change your director to this folder and execute the below command in your terminal
+- Change your directory to this folder and execute the below command in your terminal
 
-  > kubectl apply k .
+  ```
+  kubectl apply k .
+  ```
 
 - All your services and deployments are up and running and ready to use.
 
@@ -69,17 +81,27 @@ Change your current directory to this director and apply all the files in ths k8
 
 - If you are on cloud infra then get the endpoint of the API service and you can access the api like **{your-service-endpoint}/movies**
 
+  - Youe can use the below command to get the `service-endpoint`. After you execute the below command you will find the endpoint in the External IP column.
+
+  ```
+  kubectl describe service api-service wide -o
+  ```
+
 #### Setup Database
 
 Once all you services, deployments and pods are up and running. Follow the below steps to add some data to the databse.
 
 - Login into the terminal for the mysql DB container either bash or Bourne shell (sh)
 
-  > kubectl exec -it your-pod-name bash|sh.
+  ```
+  kubectl exec -it your-pod-name bash|sh.
+  ```
 
 - Once inside the terminal, use the below command to login into mysql and enter password when prompted
 
-  > mysql -u your-username-same-as-in-configmap -p
+  ```
+  mysql -u your-username-same-as-in-configmap -p
+  ```
 
 - Now copy the SQL script loacted in **init-db** folder and paste the same in the mysql terminal. Press enter.
 
@@ -95,22 +117,30 @@ Once all you services, deployments and pods are up and running. Follow the below
 
 - In order to delete execute the below commond to delete all the resources(i.e. everything you created)
 
-> kubectl delete -k .
+  ```
+  kubectl delete -k .
+  ```
 
 #### Method 2
 
 - Execute the below command one by one for each file. if you delete a resources that other resources depend on it will delete the dependent resource too. For eg. if you delete the namespace first it will delete all esources linked to that namespace.
 
-> kubectl delete -f ./k8-specs/{filename}.yaml
+  ```
+  kubectl delete -f ./k8-specs/{filename}.yaml
+  ```
 
 #### Method 3 : Development stage only
 
 - Use the below command to delete everything except the persistent volume, volume claim and namespace. This is to help in the development process only.
 
-> kubectl delete -k ./k8-specs
+  ```
+  kubectl delete -k ./k8-specs
+  ```
 
 #### Method 4
 
 - Use below command to delete each resource one by one
 
-> kubectl delete {resource-type:[service | pod | pv | pvc | namespace | deployment | congifmap | secret]} {resource-name}
+  ```
+  kubectl delete {resource-type:[service | pod | pv | pvc | namespace | deployment | congifmap | secret]} {resource-name}
+  ```

@@ -6,6 +6,7 @@ metadata:
 data:
   MYSQL_DB_HOST: db-service.nagp.svc
   MYSQL_DATABASE: nagp-k8
+  MYSQL_TABLE: movies
 
 ---
 apiVersion: v1

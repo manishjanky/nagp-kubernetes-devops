@@ -8,7 +8,7 @@ spec:
   accessModes:
     - ReadWriteOnce # Because only one DB node will be accessing this
   hostPath:
-    path: "/mysql-data"
+    path: "/mnt/disks" # this depends on provider platform, eg. on google cloud only allowed path is /mnt/disks
   persistentVolumeReclaimPolicy: Retain
   storageClassName: "" # In order for this to be claimed by the PVC
 
@@ -26,4 +26,3 @@ spec:
   resources:
     requests:
       storage: 100Mi
-
