@@ -81,13 +81,13 @@ Change your current directory to this director and apply all the files in ths k8
 
 - If you are on cloud infra then get the endpoint of the API service and you can access the api like **{your-service-endpoint}/movies**
 
-  - Youe can use the below command to get the `service-endpoint`. You will find the endpoint in the External IP column.
+  - Youe can use the below command to get the `service-endpoint`. You will find the endpoint in the External-IP column.
 
   ```
-  kubectl describe service api-service wide -o
+  kubectl get service api-service
   ```
 
-#### Setup Database
+#### Setup/Add Data
 
 Once all you services, deployments and pods are up and running. Follow the below steps to add some data to the databse.
 
