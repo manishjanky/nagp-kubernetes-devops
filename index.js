@@ -81,12 +81,16 @@ app.use((req, res, next) => {
 });
 /**END: Set API Level config/response headers */
 
+/**
+ * HttpGET For POD Health check
+ * Use by readiness probe for Rolling update
+ */
 app.get("/", (req, res) => {
   res.send("Hello There! Have a nice day.");
 });
 
 /**
- * Http GET API to fetch movies
+ * Http GET API to fetch movies from the DB
  */
 app.get("/movies", jsonParser, async (req, res) => {
   let result;
