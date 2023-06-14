@@ -86,7 +86,7 @@ app.use((req, res, next) => {
  * Use by readiness probe for Rolling update
  */
 app.get("/", (req, res) => {
-  res.send("Hello There! Have a nice day.");
+  res.send({ status: "READY", message: "Hello There! Have a nice day." });
 });
 
 /**

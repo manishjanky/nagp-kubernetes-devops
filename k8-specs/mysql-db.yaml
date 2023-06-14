@@ -34,7 +34,7 @@ spec:
       volumes:
         - name: mysql-db
           # hostPath:
-          #   path: /data # this may depend on the kubernetes service e.g. For GCE this is /mnt/disks
+          #   path: /mnt/disks # this may depend on the kubernetes service e.g. For GCE this is /mnt/disks
           persistentVolumeClaim:
             claimName: mysql-db
 

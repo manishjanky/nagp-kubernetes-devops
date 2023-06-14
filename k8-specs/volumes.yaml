@@ -10,7 +10,7 @@ spec:
   hostPath:
     path: "/mnt/disks" # this depends on provider platform, eg. on google cloud only allowed path is /mnt/disks
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: "" # In order for this to be claimed by the PVC
+  storageClassName: ""
 
 ---
 apiVersion: v1
@@ -22,7 +22,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   volumeName: mysql-db # Volume to claim
-  storageClassName: "" # In order for PVC to claim the relevant PV
+  storageClassName: ""
   resources:
     requests:
       storage: 100Mi

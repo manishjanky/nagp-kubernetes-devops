@@ -6,7 +6,7 @@ This assignments goal to setup a api service and a databse on kubernetes. The db
 
 - **API tier docker image** : [manishnagarro/nagp-k8-api-service](https://hub.docker.com/r/manishnagarro/nagp-k8-api-service)
 - **Github repo** : [nagp-kubernetes-devops](https://github.com/manishjanky/nagp-kubernetes-devops)
-- **API service endpoint** : 
+- **API service endpoint** :
   - **On local** : http://localhost:300/movies
   - **On cloud** : http://{your-api-service-endpoint}/movies
 
@@ -75,7 +75,19 @@ Change your current directory to this director and apply all the files in ths k8
 
 - All your services and deployments are up and running and ready to use.
 
-#### Accessing the deployed services
+#### Accessing the deployed services and resources
+
+- Set current namespace context. You can either use the below command or use `kubectl` commands with `-n=<namespace-name>` to execute the command in a particular namespace. In this case the namespace name is **`nagp`**
+
+  ```
+  kubectl config set-context --current=true --namespace=nagp
+  ```
+
+  or use like
+
+  ```
+  kubectl get po -n=nagp
+  ```
 
 - If you are on your local machine the your service is accessible on **http://localhost:300/movies**
 
@@ -94,7 +106,7 @@ Once all you services, deployments and pods are up and running. Follow the below
 - Login into the terminal for the mysql DB container either bash or Bourne shell (sh)
 
   ```
-  kubectl exec -it your-pod-name bash|sh.
+  kubectl exec -it your-pod-name /bin/bash.
   ```
 
 - Once inside the terminal, use the below command to login into mysql and enter password when prompted
