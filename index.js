@@ -7,7 +7,7 @@ const mysql = require("mysql");
 /**START: Declare necessary variables */
 const app = express();
 const port = 3000;
-const connectionAttemptDelay = 2000;
+const connectionAttemptDelay = 1500;
 const db_name = process.env.MYSQL_DATABASE;
 const table_name = process.env.MYSQL_TABLE;
 const db_username = process.env.MYSQL_USER;
@@ -37,29 +37,37 @@ const openConnection = (con) => {
 /**END: Initiate MySQL DB Connection */
 
 /**START: DB Connection */
-const initiateConnection = (attempts, connection) => {
+const initiateConnection = (attempts) => {
   // Initiate a connection once for one connection attempts cycle
-  const con = connection || createConnection();
-  return new Promise((resolve) => {
-    openConnection(con).then(
-      () => {
-        console.log(`DB Connection ready, remaining attempts: ${attempts}`);
-        resolve(con);
-      },
-      (err) => {
-        console.log(`DB connection error, remaining attempt:${attempts}`);
-        if (attempts === 0) {
-          console.log(err);
-          reject(err);
+
+  const con = createConnection();
+  return new Promise((resolve, reject) => {
+    openConnection(con)
+      .then(
+        () => {
+          console.log(`DB Connection ready, remaining attempts: ${attempts}`);
+          resolve(con);
+        },
+        (err) => {
+          console.log(`DB connection error, remaining attempt:${attempts}`);
+          con.end();
+          if (attempts === 0) {
+            console.log(err);
+            reject(err);
+          }
+          // Attempt a retry if remaining attempts.
+          if (attempts >= 1)
+            setTimeout(() => {
+              initiateConnection(attempts - 1).catch((ex) => {
+                console.log("Error establishing a DB connection.", ex);
+                reject(ex);
+              });
+            }, connectionAttemptDelay);
         }
-        // Attempt a retry if remaining attempts.
-        if (attempts >= 1)
-          setTimeout(
-            () => initiateConnection(attempts - 1, con),
-            connectionAttemptDelay
-          );
-      }
-    );
+      )
+      .catch((ex) => {
+        reject(ex);
+      });
   });
 };
 
@@ -112,9 +120,10 @@ app.get("/movies", jsonParser, async (req, res) => {
 function getMovies() {
   return new Promise(async (resolve, reject) => {
     // Start a DB connection
-    const con = await initiateConnection(2).catch(() => {
+    const con = await initiateConnection(2).catch((err) => {
       reject("Unable to process request");
     });
+
     if (con) {
       con.query(`SELECT * FROM ${table_name}`, (err, result) => {
         if (err) {
@@ -122,7 +131,7 @@ function getMovies() {
         } else {
           resolve(result);
         }
-        // Destroy the connection when done processing to avoid any side effects
+        // Close the connection when done processing to avoid any side effects
         con.end();
       });
     }

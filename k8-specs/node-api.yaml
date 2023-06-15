@@ -54,3 +54,5 @@ spec:
     - targetPort: 3000
       port: 3000
       protocol: TCP
+
+#Rolling Update Test: kubectl set image deployment/api-service api-service=manishnagarro/nagp-k8-api-service:v1
