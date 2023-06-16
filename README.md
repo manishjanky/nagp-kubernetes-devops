@@ -156,3 +156,17 @@ Once all you services, deployments and pods are up and running. Follow the below
   ```
   kubectl delete {resource-type:[service | pod | pv | pvc | namespace | deployment | congifmap | secret]} {resource-name}
   ```
+
+### Create a fresh docker image
+
+Use below command to create a fresh image for the API Tier.
+
+```
+docker build . -t [image-name]:[tag]
+```
+
+ex.
+
+```
+docker build . -t nagp-k8-api-service:v1
+```
