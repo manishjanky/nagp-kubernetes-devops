@@ -89,7 +89,7 @@ Change your current directory to this director and apply all the files in ths k8
   kubectl get po -n=nagp
   ```
 
-- If you are on your local machine the your service is accessible on **http://localhost:300/movies**
+- If you are on your local machine then your service is accessible on **http://localhost:300/movies**
 
 - If you are on cloud infra then get the endpoint of the API service and you can access the api like **{your-service-endpoint}/movies**
 
@@ -106,7 +106,7 @@ Once all you services, deployments and pods are up and running. Follow the below
 - Login into the terminal for the mysql DB container either bash or Bourne shell (sh)
 
   ```
-  kubectl exec -it your-pod-name /bin/bash.
+  kubectl exec -it your-pod-name -- /bin/bash.
   ```
 
 - Once inside the terminal, use the below command to login into mysql and enter password when prompted
